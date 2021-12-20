@@ -1,32 +1,60 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <v-container>
+    <div class="content">
+      <v-btn @click="visible = true"> Add new </v-btn>
+      <student-lits :students="students" v-if="students.length" />
+      <p v-else>Список пуст</p>
+      <my-modal :visible="visible" @closeModal="closeModal">
+        <edit-form @modalSubmit="addStudent" />
+      </my-modal>
     </div>
-    <router-view />
-  </div>
+  </v-container>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script lang="ts">
+import Vue from "vue";
+import { mapState } from "vuex";
+import StudentLits from "./components/StudentsList.vue";
+import MyModal from "./components/UI/MyModal.vue";
+import EditForm from "./components/EditForm.vue";
+import IStudents from "./interfaces/IStudents";
+
+interface IData {
+  visible: boolean;
 }
 
-#nav {
-  padding: 30px;
-}
+export default Vue.extend({
+  name: "App",
+  components: {
+    StudentLits,
+    MyModal,
+    EditForm,
+  },
+  data(): IData {
+    return {
+      visible: false,
+    };
+  },
+  methods: {
+    closeModal(): void {
+      this.visible = false;
+    },
+    addStudent(newItem: IStudents): void {
+      this.visible = false;
+      newItem.id = Date.now();
+      this.$store.commit("addPost", newItem);
+    },
+  },
+  computed: {
+    ...mapState({
+      students: (state: any) => state.students.data,
+    }),
+  },
+});
+</script>
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+<style scoped>
+.container {
+  font-family: "Sintony", sans-serif;
 }
 </style>
