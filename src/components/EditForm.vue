@@ -8,12 +8,13 @@
           v-model="formState[form.name]"
         ></v-text-field>
       </div>
-      <v-btn @click="addPost">Update student</v-btn>
+      <v-btn @click="addStudent">Update student</v-btn>
     </form>
   </div>
 </template>
 
 <script lang="ts">
+import Vue from "vue";
 import { fromDataImport } from "../helpers/index";
 import IStudents from "../interfaces/IStudents";
 import IFromState from "../interfaces/IFromState";
@@ -23,7 +24,7 @@ interface IData {
   formState: IStudents;
 }
 
-export default {
+export default Vue.extend({
   props: {
     student: {
       type: Object,
@@ -37,11 +38,11 @@ export default {
     };
   },
   methods: {
-    addPost(): void {
+    addStudent(): void {
       this.$emit("modalSubmit", this.formState);
     },
   },
-};
+});
 </script>
 
 <style></style>

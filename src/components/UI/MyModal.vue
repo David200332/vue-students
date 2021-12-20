@@ -7,7 +7,8 @@
 </template>
 
 <script lang="ts">
-export default {
+import Vue from "vue";
+export default Vue.extend({
   props: {
     visible: {
       type: Boolean,
@@ -19,7 +20,7 @@ export default {
       this.$emit("closeModal", false);
     },
   },
-};
+});
 </script>
 
 <style scoped>
